@@ -1,0 +1,23 @@
+# Gunicorn Site systemd service file
+
+[Unit]
+Description=Gunicorn server for ShouldIAskHerOut.com
+After=network.target
+After=syslog.target
+
+[Service]
+ExecStart="/home/gwenpool/.virtualenvs/askherout/bin/gunicorn --chdir /repos/shouldiaskherout/ wsgi:app --bind unix:/tmp/askherout.socket"
+Restart=on-failure
+RuntimeDirectory=gunicorn-stagingd
+RuntimeDirectoryMode=755
+
+[Install]
+WantedBy=multi-user.target
+Alias=askherout
+
+# To enable and run: 
+# sudo systemctl enable askherout
+# sudo systemctl start askherout
+
+# Reference
+# https://www.freedesktop.org/software/systemd/man/systemd.service.html
